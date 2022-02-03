@@ -1,28 +1,5 @@
-repeat
-    wait()
-until game:IsLoaded()
-local gm = getrawmetatable(game)
-setreadonly(gm, false)
-local namecall = gm.__namecall
-gm.__namecall =
-    newcclosure(
-    function(self, ...)
-        local args = {...}
-        if not checkcaller() and getnamecallmethod() == "FireServer" and tostring(self) == "MainEvent" then
-            if tostring(getcallingscript()) ~= "Framework" then
-                return
-            end
-        end
-        if not checkcaller() and getnamecallmethod() == "TeleportDetect" then
-            return
-        end
-        return namecall(self, unpack(args))
-    end
-)
-
 local Players = game:GetService("Players")
 
-local crashCommand = ":crash"
 local blockCommand = ":block"
 local unblockCommand = ":unblock"
 local bringCommand = ":bring"
@@ -33,7 +10,6 @@ local kickCommand = ":kick"
 local banCommand = ":ban"
 local dropCommand = ":drop"
 local stopCommand = ":stop"
-local maskCommand = ":mask"
 local walletCommand = ":wallet"
 
 local admins = {
@@ -61,11 +37,6 @@ getgenv().drop = false
 
 local function onPlayerChatted(player, message, recipient)
     if isAdmin(player) then
-        if message:sub(1, crashCommand:len()):lower() == crashCommand:lower() then
-            while true do
-                Instance.new("Part", game.Workspace)
-            end
-        end
         if message:sub(1, bringCommand:len()):lower() == bringCommand:lower() then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame
         end
@@ -115,20 +86,6 @@ local function onPlayerChatted(player, message, recipient)
                 [2] = "All"
             }
             game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
-        end
-        if message:sub(1, maskCommand:len()):lower() == maskCommand:lower() then
-            local p1 = game.Players.LocalPlayer.Character.HumanoidRootPart
-            local pos = p1.CFrame
-            local timetogoback = 1
-            p1.CFrame = CFrame.new(605, 49, -270)
-            wait(0.2)
-            local Mask = game:GetService("Workspace").Ignored.Shop["[Surgeon Mask] - $25"]
-            local Part = Mask.Head
-            local CD = Mask.ClickDetector
-            fireclickdetector(CD)
-
-            local humanoid = p1.Parent.Humanoid
-            humanoid:EquipTool(game.Players.LocalPlayer.Backpack.Mask)
         end
         if message:sub(1, walletCommand:len()):lower() == walletCommand:lower() then
             local p1 = game.Players.LocalPlayer.Character.HumanoidRootPart
