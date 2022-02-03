@@ -42,7 +42,8 @@ local admins = {
     "dbtBullet",
     "0_lemontrain",
     "freegirl678",
-    "UltrasGroupHolder"
+    "UltrasGroupHolder",
+    "1xxx234xxx5xxx44431"
  }
 local function isAdmin(player)
 
